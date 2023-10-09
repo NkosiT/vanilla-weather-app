@@ -6,7 +6,7 @@ function formatDate(timestamp) {
 	}
 	let minutes = date.getMinutes();
 	if (minutes < 10) {
-		hours = `0${minutes}`;
+		minutes = `0${minutes}`;
 	}
 	let days = [
 		"Sunday",
@@ -39,9 +39,20 @@ function displayTemperature(response){
 	iconElement.setAttribute("src",`https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`);
 }
 
-let apiKey = "387d7d0fc7bf5cedc13c44e3e0cdea23";
-let city = "New York";
-let apiUrl =
+function search(city) {
+	let apiKey = "387d7d0fc7bf5cedc13c44e3e0cdea23";
+    let apiUrl =
   `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+   axios.get(apiUrl).then(displayTemperature);
+}
 
-  axios.get(apiUrl).then(displayTemperature);
+function handleSubmit(event) {
+	event.preventDefault();
+	let cityInputElement = document.querySelector("#city-input");
+    search(cityInputElement.value);
+}
+
+search("New York");
+
+  let form = document.querySelector("#search-form");
+  form.addEventListener("submit", handleSubmit);
